@@ -2049,7 +2049,7 @@ mutable struct HenselCtx
     ccall((:nmod_poly_factor, :libflint), UInt,
           (Ref{Nemo.nmod_poly_factor}, Ref{gfp_poly}), (a.lf), Rx(f))
     r = a.lf.num
-    a.r = r  
+    a.r = r
     a.LF = fmpz_poly_factor()
 #    @assert r > 1  #flint restriction
     a.v = ccall((:flint_malloc, :libflint), Ptr{fmpz_poly_raw}, (Int, ), (2*r-2)*sizeof(fmpz_poly_raw))
