@@ -1,7 +1,7 @@
 import Nemo.characteristic, Nemo.gen, Nemo.size
 export gen, characteristic, size, elem_to_mat_row!, rand
 
-function gen(R::Generic.ResRing{T}) where T<:PolyElem  
+function gen(R::Generic.ResRing{T}) where T<:PolyElem
   return R(gen(base_ring(R)))
 end
 
@@ -9,8 +9,8 @@ function gen(R::Generic.ResRing{fq_nmod_poly}) ## this is not covered by above
   return R(gen(base_ring(R)))              ## and I don't know why
 end
 
-function gen(R::Generic.ResRing{nmod_poly}) 
-  return R(gen(base_ring(R)))     
+function gen(R::Generic.ResRing{nmod_poly})
+  return R(gen(base_ring(R)))
 end
 
 function characteristic(R::Generic.ResRing{Nemo.fmpz})
@@ -64,7 +64,7 @@ end
 
 #################################################
 # in triplicate.... and probably cases missing...
-function elem_to_mat_row!(M::MatElem, i::Int, a::ResElem{T}) where T <: PolyElem 
+function elem_to_mat_row!(M::MatElem, i::Int, a::ResElem{T}) where T <: PolyElem
   z = zero(parent(M[1,1]))
   for j=0:degree(a.data)
     M[i,j+1] = coeff(a.data, j)
@@ -73,7 +73,7 @@ function elem_to_mat_row!(M::MatElem, i::Int, a::ResElem{T}) where T <: PolyElem
     M[i,j] = z
   end
 end
-function elem_to_mat_row!(M::MatElem, i::Int, a::ResElem{fq_poly}) 
+function elem_to_mat_row!(M::MatElem, i::Int, a::ResElem{fq_poly})
   z = zero(parent(M[1,1]))
   for j=0:degree(a.data)
     M[i,j+1] = coeff(a.data, j)
@@ -82,7 +82,7 @@ function elem_to_mat_row!(M::MatElem, i::Int, a::ResElem{fq_poly})
     M[i,j] = z
   end
 end
-function elem_to_mat_row!(M::MatElem, i::Int, a::ResElem{fq_nmod_poly}) 
+function elem_to_mat_row!(M::MatElem, i::Int, a::ResElem{fq_nmod_poly})
   z = zero(parent(M[1,1]))
   for j=0:degree(a.data)
     M[i,j+1] = coeff(a.data, j)
@@ -92,46 +92,46 @@ function elem_to_mat_row!(M::MatElem, i::Int, a::ResElem{fq_nmod_poly})
   end
 end
 
-function rand(R::Generic.ResRing{fmpz})
-  return R(rand(fmpz(0):(size(R)-1)))
+function rand(r::Random.AbstractRNG, R::Generic.ResRing{fmpz})
+  return R(rand(r, fmpz(0):(size(R)-1)))
 end
 
-function rand(R::Generic.ResField{fmpz})
-  return R(rand(fmpz(0):(order(R)-1)))
+function rand(r::Random.AbstractRNG, R::Generic.ResField{fmpz})
+  return R(rand(r, fmpz(0):(order(R)-1)))
 end
 
-function rand(R::Generic.ResRing{T}) where T<:PolyElem
-  r = rand(base_ring(base_ring(R)))
+function rand(r::Random.AbstractRNG, R::Generic.ResRing{T}) where T<:PolyElem
+  r = rand(r, base_ring(base_ring(R)))
   g = gen(R)
   for i=1:degree(R.modulus)
-    r = r*g + rand(base_ring(base_ring(R)))
+    r = r*g + rand(r, base_ring(base_ring(R)))
   end
   return r
 end
 
-function rand(R::Generic.ResRing{fq_nmod_poly})
-  r = rand(base_ring(base_ring(R)))
+function rand(r::Random.AbstractRNG, R::Generic.ResRing{fq_nmod_poly})
+  r = rand(r, base_ring(base_ring(R)))
   g = gen(R)
   for i=1:degree(R.modulus)
-    r = r*g + rand(base_ring(base_ring(R)))
+    r = r*g + rand(r, base_ring(base_ring(R)))
   end
   return r
 end
 
-function rand(R::Generic.ResRing{fq_poly})
-  r = rand(base_ring(base_ring(R)))
+function rand(r::Random.AbstractRNG, R::Generic.ResRing{fq_poly})
+  r = rand(r, base_ring(base_ring(R)))
   g = gen(R)
   for i=1:degree(R.modulus)
-    r = r*g + rand(base_ring(base_ring(R)))
+    r = r*g + rand(r, base_ring(base_ring(R)))
   end
   return r
 end
 
-function rand(R::Generic.ResRing{nmod_poly})
-  r = rand(base_ring(base_ring(R)))
+function rand(r::Random.AbstractRNG, R::Generic.ResRing{nmod_poly})
+  r = rand(r, base_ring(base_ring(R)))
   g = gen(R)
   for i=1:degree(R.modulus)
-    r = r*g + rand(base_ring(base_ring(R)))
+    r = r*g + rand(r, hbase_ring(base_ring(R)))
   end
   return r
 end
@@ -158,7 +158,7 @@ function gens(R::Generic.ResRing{T}) where T<:PolyElem ## probably needs more ca
   return r
 end
 
-function gens(R::Generic.ResRing{nmod_poly}) 
+function gens(R::Generic.ResRing{nmod_poly})
   g = gen(R)
   r = Array{typeof(g), 1}()
   push!(r, one(R))
