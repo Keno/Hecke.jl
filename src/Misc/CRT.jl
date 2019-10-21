@@ -38,7 +38,7 @@ mutable struct crt_env{T}
     while 2*i <= length(pr)
       a = pr[2*i-1]
       b = pr[2*i]
-      if false
+      if true
         g, u, v = gcdx(a, b)
         @assert isone(g)
         push!(id, v*b , u*a )
